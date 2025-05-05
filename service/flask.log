@@ -14,3 +14,18 @@
 [2025-05-05 14:17:51,710] INFO in _internal: 127.0.0.1 - - [05/May/2025 14:17:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
 [2025-05-05 14:18:07,000] INFO in app: Requst data: {'area': '3', 'rooms': '4', 'total_floors': '2', 'floor': '89'}
 [2025-05-05 14:18:07,001] INFO in _internal: 127.0.0.1 - - [05/May/2025 14:18:07] "POST /api/numbers HTTP/1.1" 200 -
+[2025-05-05 14:51:27,687] INFO in app: Requst data: {'area': '3', 'rooms': '0', 'total_floors': '2', 'floor': '89'}
+[2025-05-05 14:51:27,687] INFO in _internal: 127.0.0.1 - - [05/May/2025 14:51:27] "POST /api/numbers HTTP/1.1" 200 -
+[2025-05-05 14:58:32,230] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2025-05-05 14:58:32,230] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-05-05 14:58:32,231] INFO in _internal:  * Restarting with stat
+[2025-05-05 14:58:32,424] WARNING in _internal:  * Debugger is active!
+[2025-05-05 14:58:32,428] INFO in _internal:  * Debugger PIN: 460-242-929
+[2025-05-05 14:59:04,224] INFO in _internal: 127.0.0.1 - - [05/May/2025 14:59:04] "GET / HTTP/1.1" 200 -
+[2025-05-05 14:59:26,811] INFO in app: Requst data: {'area': '15', 'rooms': '2', 'total_floors': '3', 'floor': '2'}
+[2025-05-05 14:59:26,811] INFO in _internal: 127.0.0.1 - - [05/May/2025 14:59:26] "POST /api/numbers HTTP/1.1" 200 -
+[2025-05-05 15:02:27,364] INFO in _internal:  * Detected change in '/home/eva/project/predictive_real_estate_price_analytics_service/service/app.py', reloading
+[2025-05-05 15:02:27,437] INFO in _internal:  * Restarting with stat
+[2025-05-05 15:02:27,625] WARNING in _internal:  * Debugger is active!
+[2025-05-05 15:02:27,629] INFO in _internal:  * Debugger PIN: 460-242-929

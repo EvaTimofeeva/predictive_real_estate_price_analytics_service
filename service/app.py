@@ -27,6 +27,9 @@ dictConfig(
 
 app = Flask(__name__)
 
+# Базовая цена за квадратный метр
+BASE_PRICE_PER_M2 = 100000
+
 # Маршрут для отображения формы
 @app.route('/')
 def index():
@@ -40,8 +43,60 @@ def process_numbers():
     data = request.get_json()
     
     app.logger.info(f'Requst data: {data}')
+
+    #___________________________________________________________________________
+    try:
+        # Получаем параметры из запроса
+        area = float(data['area'])
+        rooms = int(data['rooms'])
+        total_floors = int(data['total_floors'])
+        floor = int(data['floor'])
+        
+        # Проверяем корректность данных
+        if area <= 0 or rooms <= 0 or total_floors <= 0 or floor <= 0:
+            return {'status': 'error', 'message': 'Все значения должны быть положительными числами'}, 400
+        
+        if floor > total_floors:
+            return {'status': 'error', 'message': 'Этаж квартиры не может быть больше общего количества этажей'}, 400
+        
+        # Вычисляем стоимость квартиры
+        # Базовая стоимость: площадь * базовая цена
+        price = area * BASE_PRICE_PER_M2
+        
+        # Надбавка за количество комнат (5% за каждую комнату сверх 1)
+        if rooms > 1:
+            price *= 1 + 0.05 * (rooms - 1)
+        
+        # Надбавка за этаж (если не первый и не последний)
+        if 1 < floor < total_floors:
+            price *= 1.1  # +10% за "хороший" этаж
+        elif floor == total_floors:
+            price *= 0.95  # -5% за последний этаж
+        else:
+            price *= 0.9   # -10% за первый этаж
+        
+        # Округляем до тысяч
+        price = round(price / 1000) * 1000
+        
+        return {
+            'status': 'success', 
+            'data': {
+                'estimated_price': price,
+                'price_per_m2': round(price / area),
+                'parameters': {
+                    'area': area,
+                    'rooms': rooms,
+                    'total_floors': total_floors,
+                    'floor': floor
+                }
+            }
+        }
     
-    return {'status': 'success', 'data': 'Числа успешно обработаны'}
+    except (ValueError, KeyError) as e:
+        app.logger.error(f'Error processing request: {str(e)}')
+        return {'status': 'error', 'message': 'Некорректные данные'}, 400
+    #_____________________________________________________________________________________________
+    #return {'status': 'success', 'data': 'Числа успешно обработаны'}
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -74,12 +74,34 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('response').innerText = 'Ответ сервера: ' + JSON.stringify(data);
+                const responseDiv = document.getElementById('response');
+                
+                if (data.status === 'success') {
+                    const result = data.data;
+                    responseDiv.innerHTML = `
+                        <div class="success">
+                            <div class="result-item"><span class="result-label">Ориентировочная стоимость:</span> ${formatPrice(result.estimated_price)} руб.</div>
+                            <div class="result-item"><span class="result-label">Цена за м²:</span> ${formatPrice(result.price_per_m2)} руб.</div>
+                            <div class="result-item"><span class="result-label">Параметры квартиры:</span></div>
+                            <ul>
+                                <li>Площадь: ${result.parameters.area} м²</li>
+                                <li>Комнат: ${result.parameters.rooms}</li>
+                                <li>Этаж: ${result.parameters.floor} из ${result.parameters.total_floors}</li>
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    responseDiv.innerHTML = `<div class="error">Ошибка: ${data.message}</div>`;
+                }
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                document.getElementById('response').innerText = 'Произошла ошибка при отправке данных';
+                document.getElementById('response').innerHTML = '<div class="error">Произошла ошибка при отправке данных</div>';
             });
+        }
+        
+        function formatPrice(price) {
+            return new Intl.NumberFormat('ru-RU').format(price);
         }
     </script>
 </body>
