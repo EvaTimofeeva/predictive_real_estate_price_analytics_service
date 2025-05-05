@@ -137,15 +137,39 @@
             });
         }
         
+
+
+        
         function formatPrice(price) {
-            return new Intl.NumberFormat('ru-RU').format(price);
-        }
+    price = Math.round(price);
+    const million = Math.floor(price / 1000000);
+    const thousand = Math.floor((price % 1000000) / 1000);
+    
+    let result = '';
+    if (million > 0) {
+        result += million + ' млн ';
+    }
+    if (thousand > 0) {
+        result += thousand + ' тыс ';
+    }
+    
+    // Если цена меньше 1000, показываем полную сумму без "тыс"
+    if (million === 0 && thousand === 0) {
+        return price 
+    }
+    
+    return result ;
+}
         
         function getFloorType(floor, totalFloors) {
             if (floor === 1) return 'Первый';
             if (floor === totalFloors) return 'Последний';
             return 'Средний';
         }
+
+
+
+
     </script>
 </body>
 </head>

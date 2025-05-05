@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request 
 from logging.config import dictConfig
+import joblib
+import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 dictConfig(
     {
@@ -27,8 +30,24 @@ dictConfig(
 
 app = Flask(__name__)
 
+#************************************************
+# Загрузка обученной модели
+try:
+    model = joblib.load('models/linear_regression_model.pkl')
+    app.logger.info("Модель успешно загружена")
+except Exception as e:
+    app.logger.error(f"Ошибка загрузки модели: {str(e)}")
+    raise
+
+# Создание scaler (должен быть таким же, как при обучении)
+scaler = StandardScaler()
+
+#**********************************************************
+
+
+
 # Базовая цена за квадратный метр
-BASE_PRICE_PER_M2 = 300000
+#BASE_PRICE_PER_M2 = 300000
 
 # Маршрут для отображения формы
 @app.route('/')
@@ -59,6 +78,41 @@ def process_numbers():
         if floor > total_floors:
             return {'status': 'error', 'message': 'Этаж квартиры не может быть больше общего количества этажей'}, 400
         
+        #**************************************************************
+        # Подготовка данных для модели
+        # Масштабируем площадь так же, как при обучении
+        #area_scaled = scaler.transform([[area]])[0][0]
+        
+        # Делаем предсказание с помощью модели
+        predicted_price = model.predict([[area]])[0]
+        print('predicted_price: ', predicted_price )
+        return {
+            'status': 'success', 
+            'data': {
+                'estimated_price': predicted_price,
+                'price_per_m2': round(predicted_price / area),
+                'parameters': {
+                    'area': area,
+                    'rooms': rooms,
+                    'total_floors': total_floors,
+                    'floor': floor
+                },
+                'model_used': True  # Флаг, что использовалась ML модель
+            }
+        }
+    
+    except (ValueError, KeyError) as e:
+        app.logger.error(f'Error processing request: {str(e)}')
+        return {'status': 'error', 'message': 'Некорректные данные'}, 400
+    except Exception as e:
+        app.logger.error(f'Model prediction error: {str(e)}')
+        return {'status': 'error', 'message': 'Ошибка предсказания модели'}, 500
+    
+        #***********************************************************
+
+
+        """
+
         # Вычисляем стоимость квартиры
         # Базовая стоимость: площадь * базовая цена
         price = area * BASE_PRICE_PER_M2
@@ -91,10 +145,12 @@ def process_numbers():
                 }
             }
         }
+
+        
     
     except (ValueError, KeyError) as e:
         app.logger.error(f'Error processing request: {str(e)}')
-        return {'status': 'error', 'message': 'Некорректные данные'}, 400
+        return {'status': 'error', 'message': 'Некорректные данные'}, 400 """
     
     #return {'status': 'success', 'data': 'Числа успешно обработаны'}
 
