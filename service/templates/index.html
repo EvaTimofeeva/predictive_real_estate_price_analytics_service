@@ -75,33 +75,78 @@
             .then(response => response.json())
             .then(data => {
                 const responseDiv = document.getElementById('response');
+                responseDiv.style.display = 'block';
                 
                 if (data.status === 'success') {
                     const result = data.data;
                     responseDiv.innerHTML = `
-                        <div class="success">
-                            <div class="result-item"><span class="result-label">Ориентировочная стоимость:</span> ${formatPrice(result.estimated_price)} руб.</div>
-                            <div class="result-item"><span class="result-label">Цена за м²:</span> ${formatPrice(result.price_per_m2)} руб.</div>
-                            <div class="result-item"><span class="result-label">Параметры квартиры:</span></div>
-                            <ul>
-                                <li>Площадь: ${result.parameters.area} м²</li>
-                                <li>Комнат: ${result.parameters.rooms}</li>
-                                <li>Этаж: ${result.parameters.floor} из ${result.parameters.total_floors}</li>
-                            </ul>
+                        <h2>Результаты расчета</h2>
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-label">Общая стоимость</div>
+                                <div class="result-value">${formatPrice(result.estimated_price)} ₽</div>
+                                <div class="result-label">Ориентировочная цена</div>
+                            </div>
+                            
+                            <div class="result-item">
+                                <div class="result-label">Цена за квадратный метр</div>
+                                <div class="result-value">${formatPrice(result.price_per_m2)} ₽</div>
+                                <div class="result-label">Стоимость м²</div>
+                            </div>
+                            
+                            <div class="parameters-list">
+                                <h3>Параметры квартиры</h3>
+                                <div class="parameters-grid">
+                                    <div class="parameter-item">
+                                        <span class="parameter-label">Площадь:</span>
+                                        <span class="parameter-value">${result.parameters.area} м²</span>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <span class="parameter-label">Комнат:</span>
+                                        <span class="parameter-value">${result.parameters.rooms}</span>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <span class="parameter-label">Этаж:</span>
+                                        <span class="parameter-value">${result.parameters.floor}/${result.parameters.total_floors}</span>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <span class="parameter-label">Тип этажа:</span>
+                                        <span class="parameter-value">${getFloorType(result.parameters.floor, result.parameters.total_floors)}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     `;
                 } else {
-                    responseDiv.innerHTML = `<div class="error">Ошибка: ${data.message}</div>`;
+                    responseDiv.innerHTML = `
+                        <div class="error-message">
+                            <h3>Ошибка расчета</h3>
+                            <p>${data.message || 'Произошла ошибка при расчете стоимости'}</p>
+                        </div>
+                    `;
                 }
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                document.getElementById('response').innerHTML = '<div class="error">Произошла ошибка при отправке данных</div>';
+                const responseDiv = document.getElementById('response');
+                responseDiv.style.display = 'block';
+                responseDiv.innerHTML = `
+                    <div class="error-message">
+                        <h3>Ошибка соединения</h3>
+                        <p>Произошла ошибка при отправке данных на сервер</p>
+                    </div>
+                `;
             });
         }
         
         function formatPrice(price) {
             return new Intl.NumberFormat('ru-RU').format(price);
+        }
+        
+        function getFloorType(floor, totalFloors) {
+            if (floor === 1) return 'Первый';
+            if (floor === totalFloors) return 'Последний';
+            return 'Средний';
         }
     </script>
 </body>

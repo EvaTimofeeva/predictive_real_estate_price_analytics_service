@@ -29,3 +29,16 @@
 [2025-05-05 15:02:27,437] INFO in _internal:  * Restarting with stat
 [2025-05-05 15:02:27,625] WARNING in _internal:  * Debugger is active!
 [2025-05-05 15:02:27,629] INFO in _internal:  * Debugger PIN: 460-242-929
+[2025-05-05 15:08:32,864] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2025-05-05 15:08:32,864] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-05-05 15:08:32,865] INFO in _internal:  * Restarting with stat
+[2025-05-05 15:08:33,056] WARNING in _internal:  * Debugger is active!
+[2025-05-05 15:08:33,061] INFO in _internal:  * Debugger PIN: 460-242-929
+[2025-05-05 15:08:37,610] INFO in _internal: 127.0.0.1 - - [05/May/2025 15:08:37] "GET / HTTP/1.1" 200 -
+[2025-05-05 15:08:51,970] INFO in app: Requst data: {'area': '8', 'rooms': '3', 'total_floors': '3', 'floor': '3'}
+[2025-05-05 15:08:51,971] INFO in _internal: 127.0.0.1 - - [05/May/2025 15:08:51] "POST /api/numbers HTTP/1.1" 200 -
+[2025-05-05 15:09:26,460] INFO in app: Requst data: {'area': '-2', 'rooms': '3', 'total_floors': '3', 'floor': '3'}
+[2025-05-05 15:09:26,460] INFO in _internal: 127.0.0.1 - - [05/May/2025 15:09:26] "[31m[1mPOST /api/numbers HTTP/1.1[0m" 400 -
+[2025-05-05 15:09:39,496] INFO in app: Requst data: {'area': '25', 'rooms': '3', 'total_floors': '1', 'floor': '1'}
+[2025-05-05 15:09:39,497] INFO in _internal: 127.0.0.1 - - [05/May/2025 15:09:39] "POST /api/numbers HTTP/1.1" 200 -
