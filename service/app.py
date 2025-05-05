@@ -95,7 +95,7 @@ def process_numbers():
     except (ValueError, KeyError) as e:
         app.logger.error(f'Error processing request: {str(e)}')
         return {'status': 'error', 'message': 'Некорректные данные'}, 400
-    #_____________________________________________________________________________________________
+    
     #return {'status': 'success', 'data': 'Числа успешно обработаны'}
 
 if __name__ == '__main__':

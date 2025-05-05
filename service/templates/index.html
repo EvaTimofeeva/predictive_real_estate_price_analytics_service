@@ -39,16 +39,37 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Введите четыре числа</h2>
-        <form id="numberForm">
-            <input type="number" id="num1" placeholder="Площадь квартиры, м2" required>
-            <input type="number" id="num2" placeholder="Количество комнат" required>
-            <input type="number" id="num3" placeholder="Этажей в доме" required>
-            <input type="number" id="num4" placeholder="Этаж квартиры" required>
-            <button type="button" onclick="submitForm()">Отправить</button>
-        </form>
-        <div id="response"></div>
+    <div class="container">
+        <div class="form-card">
+            <h2>Калькулятор стоимости квартиры</h2>
+            <form id="numberForm">
+                <div class="input-group">
+                    <span class="input-label">Площадь квартиры, м²:</span>
+                    <input type="number" id="num1" placeholder="Например: 45" required min="1">
+                </div>
+                
+                <div class="input-group">
+                    <span class="input-label">Количество комнат:</span>
+                    <input type="number" id="num2" placeholder="Например: 2" required min="1">
+                </div>
+                
+                <div class="input-group">
+                    <span class="input-label">Этажей в доме:</span>
+                    <input type="number" id="num3" placeholder="Например: 9" required min="1">
+                </div>
+                
+                <div class="input-group">
+                    <span class="input-label">Этаж квартиры:</span>
+                    <input type="number" id="num4" placeholder="Например: 3" required min="1">
+                </div>
+                
+                <button type="button" onclick="submitForm()">Рассчитать стоимость</button>
+            </form>
+        </div>
+        
+        <div id="response" class="result-card">
+            <!-- Результаты будут вставлены сюда -->
+        </div>
     </div>
 
     <script>
@@ -80,40 +101,17 @@
                 if (data.status === 'success') {
                     const result = data.data;
                     responseDiv.innerHTML = `
-                        <h2>Результаты расчета</h2>
+                        <h2 style="color: #f44336;">Итоговый расчет стоимости</h2>
                         <div class="result-grid">
                             <div class="result-item">
-                                <div class="result-label">Общая стоимость</div>
+                                <div class="result-label">Общая стоимость:</div>
                                 <div class="result-value">${formatPrice(result.estimated_price)} ₽</div>
-                                <div class="result-label">Ориентировочная цена</div>
                             </div>
+                            
                             
                             <div class="result-item">
-                                <div class="result-label">Цена за квадратный метр</div>
+                                <div class="result-label">Цена за м²:</div>
                                 <div class="result-value">${formatPrice(result.price_per_m2)} ₽</div>
-                                <div class="result-label">Стоимость м²</div>
-                            </div>
-                            
-                            <div class="parameters-list">
-                                <h3>Параметры квартиры</h3>
-                                <div class="parameters-grid">
-                                    <div class="parameter-item">
-                                        <span class="parameter-label">Площадь:</span>
-                                        <span class="parameter-value">${result.parameters.area} м²</span>
-                                    </div>
-                                    <div class="parameter-item">
-                                        <span class="parameter-label">Комнат:</span>
-                                        <span class="parameter-value">${result.parameters.rooms}</span>
-                                    </div>
-                                    <div class="parameter-item">
-                                        <span class="parameter-label">Этаж:</span>
-                                        <span class="parameter-value">${result.parameters.floor}/${result.parameters.total_floors}</span>
-                                    </div>
-                                    <div class="parameter-item">
-                                        <span class="parameter-label">Тип этажа:</span>
-                                        <span class="parameter-value">${getFloorType(result.parameters.floor, result.parameters.total_floors)}</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     `;
