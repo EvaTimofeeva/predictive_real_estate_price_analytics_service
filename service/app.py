@@ -28,7 +28,7 @@ dictConfig(
 app = Flask(__name__)
 
 # Базовая цена за квадратный метр
-BASE_PRICE_PER_M2 = 100000
+BASE_PRICE_PER_M2 = 300000
 
 # Маршрут для отображения формы
 @app.route('/')
