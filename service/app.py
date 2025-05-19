@@ -84,7 +84,7 @@ def process_numbers():
         #area_scaled = scaler.transform([[area]])[0][0]
         
         # Делаем предсказание с помощью модели
-        predicted_price = model.predict([[area]])[0]
+        predicted_price = np.expm1(model.predict([[area]]))[0]
         print('predicted_price: ', predicted_price )
         return {
             'status': 'success', 
