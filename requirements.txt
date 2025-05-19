@@ -1,3 +1,4 @@
 cianparser
 pandas
 catboost
+xgboost
