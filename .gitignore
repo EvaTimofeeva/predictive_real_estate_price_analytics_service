@@ -3,3 +3,4 @@ data
 *.log
 notebooks/.ipynb_checkpoints
 __pycache__/
+notebooks/catboost_info
