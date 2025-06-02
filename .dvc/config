@@ -1,4 +1,7 @@
 [core]
-    remote = local_backup
+    remote = storage
 ['remote "local_backup"']
     url = /home/eva/backup/dvc-pabd25
+['remote "storage"']
+    url = s3://pabd25/timofeeva
+    endpointurl = https://storage.yandexcloud.net

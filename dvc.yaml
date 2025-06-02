@@ -1,0 +1,24 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess_data.py -o data/processed
+    deps:
+      - data/raw
+      - src/preprocess_data.py
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/processed/train.csv
+      - src/train.py
+    outs:
+      - models/catboost_regression_v1.pkl
+  test:
+    cmd: python src/test.py
+    deps:
+      - models/catboost_regression_v1.pkl
+      - data/processed/test.csv
+      - src/test.py
+    outs:
+      - metrics/test_metrics.csv 
