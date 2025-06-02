@@ -1,6 +1,7 @@
 .venv
-data
+data/raw
 *.log
 notebooks/.ipynb_checkpoints
 __pycache__/
 notebooks/catboost_info
+models
